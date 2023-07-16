@@ -1,0 +1,17 @@
+GAMEPLAY 
+    player movement:
+        - add acceleration/deceleration https://stackoverflow.com/questions/68333521/acceleration-and-deceleration-in-pygame
+        - add motion blur *MAYBE
+        - add a trail
+    enemy obstacles:
+        - design them
+        - do flappy bird style co-ord reset
+        - add sine movement
+    scoreboard
+        - design scoreboard
+        - add sine movement
+
+MAIN MENU
+    - design logo
+    - compose music
+
