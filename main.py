@@ -2,7 +2,6 @@ import pygame
 
 from src.Player import Player
 
-
 pygame.init()
 
 # Create the screen

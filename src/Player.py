@@ -9,13 +9,13 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
         if keys[K_LEFT]:
-            self.rect.x -= 1
+            self.rect.x -= 10
         if keys[K_RIGHT]:
-            self.rect.x += 1
+            self.rect.x += 10
         if keys[K_UP]:
-            self.rect.y -= 1
+            self.rect.y -= 10
         if keys[K_DOWN]:
-            self.rect.y += 1
+            self.rect.y += 10
 
         
 
