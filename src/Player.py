@@ -1,12 +1,16 @@
 import pygame
 from pygame.locals import *
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.image.load('data/assets/blob_sprite.png')
         self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
+    def update_position(self):
         keys = pygame.key.get_pressed()
         if keys[K_LEFT]:
             self.rect.x -= 10

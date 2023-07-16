@@ -14,16 +14,21 @@ pygame.display.set_caption("Blob's Revenge")
 icon = pygame.image.load('data/assets/blob_icon.png')
 pygame.display.set_icon(icon)
 
+P1 = Player(176, 320)
+
 #Quits the game when the X button is pressed
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    P1.update_position()
+
     #fill screen with black
     screen.fill((0, 0, 0))
 
     #draw sprite from Player.py
-    P1 = Player(176, 320)
+    
     screen.blit(P1.image, P1.rect)
 
 
