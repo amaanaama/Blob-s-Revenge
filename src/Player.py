@@ -12,13 +12,13 @@ class Player(pygame.sprite.Sprite):
 
     def update_position(self):
         keys = pygame.key.get_pressed()
-        if keys[K_LEFT]:
+        if keys[K_LEFT] and self.rect.x > 0:
             self.rect.x -= 10
-        if keys[K_RIGHT]:
+        if keys[K_RIGHT] and self.rect.x < 352 - 64:
             self.rect.x += 10
-        if keys[K_UP]:
+        if keys[K_UP] and self.rect.y > 0:
             self.rect.y -= 10
-        if keys[K_DOWN]:
+        if keys[K_DOWN] and self.rect.y < 640 - 64:
             self.rect.y += 10
 
         
