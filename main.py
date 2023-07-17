@@ -9,6 +9,10 @@ screen = pygame.display.set_mode((352, 640))
 clock = pygame.time.Clock()
 running = True
 
+#background
+background = pygame.image.load('data/assets/background.png')
+
+
 # Title and Icon
 pygame.display.set_caption("Blob's Revenge")
 icon = pygame.image.load('data/assets/blob_icon.png')
@@ -28,8 +32,9 @@ while running:
     screen.fill((0, 0, 0))
 
     #draw sprite from Player.py
-    
+    screen.blit(background, (0, 0))
     screen.blit(P1.image, P1.rect)
+    
 
 
     pygame.display.flip()
