@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
-from Player import Player
-from enemies import Enemy
+from src.Player import Player #Why is player class not importing?
+from src.enemies import Enemy
 import random
 
 pygame.init()
@@ -16,6 +16,9 @@ background = pygame.image.load('data/assets/background.png')
 
 #scoreboard
 scoreboard = pygame.image.load('data/assets/scoreboard.png')
+
+#spawn timer
+spawn_timer = 0
 
 # Title and Icon
 pygame.display.set_caption("Blob's Revenge")
@@ -46,7 +49,7 @@ while running:
     enemies.draw(screen)
     
     spawn_timer += clock.get_rawtime()
-    if spawn_timer >= 2:
+    if spawn_timer >= 2000:
         spawn_x = random.randint(0, 352 - 50)  # Adjust the range for x position
         new_enemy = Enemy(spawn_x, -50)  # Create a new enemy instance
         enemies.add(new_enemy)  # Add the enemy to the sprite group
