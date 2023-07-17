@@ -45,5 +45,5 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.velY
 
         
-        self.rect.x = max(0, min(self.rect.x, 352 - 67))
-        self.rect.y = max(0, min(self.rect.y, 640 - 67))
+        self.rect.x = max(0, min(self.rect.x, 352 - 52))
+        self.rect.y = max(0, min(self.rect.y, 640 - 52))

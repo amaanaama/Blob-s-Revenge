@@ -1,5 +1,4 @@
 import pygame
-
 from src.Player import Player
 
 pygame.init()
@@ -12,6 +11,8 @@ running = True
 #background
 background = pygame.image.load('data/assets/background.png')
 
+#scoreboard
+scoreboard = pygame.image.load('data/assets/scoreboard.png')
 
 # Title and Icon
 pygame.display.set_caption("Blob's Revenge")
@@ -34,6 +35,7 @@ while running:
     #draw sprite from Player.py
     screen.blit(background, (0, 0))
     screen.blit(P1.image, P1.rect)
+    screen.blit(scoreboard, (93, 25))
     
 
 
