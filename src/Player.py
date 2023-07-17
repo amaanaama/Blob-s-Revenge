@@ -11,8 +11,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y
         self.velX = 0
         self.velY = 0
-        self.acc = 0.2
-        self.friction = 0.1
+        self.acc = 0.5
+        self.friction = 0.2
         self.maxVel = 5
 
     def update_position(self):
