@@ -17,4 +17,4 @@ class RightEnemy(pygame.sprite.Sprite):
         if self.rect.y > 640:
             self.rect.y = -64
             self.rect.x = random.randint(self.start_x + 64, self.start_x + 240)  # Select x-position within the range
-            self.speed = random.randint(2, 10)
+            
