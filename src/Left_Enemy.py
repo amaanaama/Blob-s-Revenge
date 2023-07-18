@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import math
-
+import random
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -17,12 +17,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y += self.speed
         if self.rect.y > 640:
             self.rect.y = -64
-        #Make enemy move sinuosoidally on the x-axis, reset x position to 0 if it goes off screen
-        self.rect.x += 2 * math.sin(self.rect.y / 64)
-        if self.rect.x < 0:
-            self.rect.x = 0
-        if self.rect.x > 352 - 64:
-            self.rect.x = 352 - 64
+        self.rect.x = -4
     
     
 

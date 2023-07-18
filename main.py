@@ -42,12 +42,13 @@ while running:
     #draw sprite from Player.py
     screen.blit(background, (0, 0))
     screen.blit(P1.image, P1.rect)
-    screen.blit(scoreboard, (93, 25))
+    
 
     #draw one instance of Left_Enemy.py
     screen.blit(LE.image, LE.rect)
     LE.update_position()
 
+    screen.blit(scoreboard, (93, 25))
     pygame.display.flip()
     clock.tick(60)
 
