@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 from src.Player import Player 
-from src.Left_Enemy import Enemy
+from src.Left_Enemy import LeftEnemy
+from src.Right_Enemy import RightEnemy
 
 pygame.init()
 
@@ -25,7 +26,8 @@ icon = pygame.image.load('data/assets/blob_icon.png')
 pygame.display.set_icon(icon)
 
 P1 = Player(176, 320)
-LE = Enemy(0, -64)
+LE = LeftEnemy(0, -64)
+RE = RightEnemy(0, -64)
 
 
 #Quits the game when the X button is pressed
@@ -47,6 +49,9 @@ while running:
     #draw one instance of Left_Enemy.py
     screen.blit(LE.image, LE.rect)
     LE.update_position()
+
+    screen.blit(RE.image, RE.rect)
+    RE.update_position()
 
     screen.blit(scoreboard, (93, 25))
     pygame.display.flip()
