@@ -10,6 +10,7 @@ pygame.init()
 screen = pygame.display.set_mode((352, 640))
 clock = pygame.time.Clock()
 running = True
+game_over = False
 
 #background
 background = pygame.image.load('data/assets/background.png')
@@ -31,13 +32,31 @@ LE = LeftEnemy(0, -64)
 RE = RightEnemy(0, -400)
 
 def check_collision():
-    global score
-    if pygame.sprite.collide_rect(P1, LE):
-        score = 0
-    if pygame.sprite.collide_rect(P1, RE):
-        score = 0
+    global score, running, game_over
+    if pygame.sprite.collide_rect(P1, LE) or pygame.sprite.collide_rect(P1, RE):
+        running = False
+        game_over = True
 
-#Quits the game when the X button is pressed
+def game_over_screen():
+    font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
+    font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
+
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
+    
+    game_over_text = font_large.render("Game Over", True, (255, 255, 255))
+    screen.blit(game_over_text, (80, 250))
+
+    score_text = font_small.render(f"Final Score: {score}", True, (255, 255, 255))
+    screen.blit(score_text, (110, 320))
+
+    play_again_text = font_small.render("Press SPACE to Play Again", True, (255, 255, 255))
+    screen.blit(play_again_text, (35, 400))
+
+    pygame.display.flip()
+    
+
+#MAIN GAME LOOP
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,6 +92,22 @@ while running:
     check_collision()
 
     pygame.display.flip()
+    clock.tick(60)
+
+while game_over:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_over = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:  # Press SPACE to play again
+                game_over = False
+                running = True
+                P1.rect.x = 176
+                P1.rect.y = 320
+                score = -1
+
+    game_over_screen()
     clock.tick(60)
 
 pygame.quit()
