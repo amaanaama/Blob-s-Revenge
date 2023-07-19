@@ -56,7 +56,18 @@ def game_over_screen():
     pygame.display.flip()
     
 
-#MAIN GAME LOOP
+# Function to reset the game state
+def reset_game():
+    global score
+    P1.rect.x = 176
+    P1.rect.y = 320
+    LE.rect.x = 0
+    LE.rect.y = -64
+    RE.rect.x = 0
+    RE.rect.y = -400
+    score = -1
+
+# MAIN GAME LOOP
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -94,23 +105,25 @@ while running:
     pygame.display.flip()
     clock.tick(60)
 
-while game_over:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_over = False
+    # Check if the game should end
+    if not running:
+        game_over = True
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:  # Press SPACE to play again
+    # Game Over Screen Loop
+    while game_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
                 game_over = False
-                running = True
-                P1.rect.x = 176
-                P1.rect.y = 320
-                score = -1
 
-    game_over_screen()
-    clock.tick(60)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:  # Press SPACE to play again
+                    game_over = False
+                    running = True
+                    reset_game()  # Reset the game state
+
+        game_over_screen()
+        pygame.display.flip()
+        clock.tick(60)
 
 pygame.quit()
-    
-
-
