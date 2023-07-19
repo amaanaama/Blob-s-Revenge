@@ -27,7 +27,7 @@ pygame.display.set_icon(icon)
 
 P1 = Player(176, 320)
 LE = LeftEnemy(0, -64)
-RE = RightEnemy(0, -64)
+RE = RightEnemy(0, -400)
 
 
 #Quits the game when the X button is pressed
