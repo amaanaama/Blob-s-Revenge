@@ -11,6 +11,8 @@ screen = pygame.display.set_mode((352, 640))
 clock = pygame.time.Clock()
 running = True
 game_over = False
+closing_game = False
+in_menu = True
 
 #background
 background = pygame.image.load('data/assets/background.png')
@@ -44,7 +46,7 @@ def game_over_screen():
     screen.fill((0, 0, 0))
     
     
-    game_over_text = font_large.render("Game Over", True, (255, 255, 255))
+    game_over_text = pygame.image.load('data/assets/gameover.png')
     screen.blit(game_over_text, (80, 250))
 
     score_text = font_small.render(f"Final Score: {score}", True, (255, 255, 255))
@@ -54,6 +56,34 @@ def game_over_screen():
     screen.blit(play_again_text, (35, 400))
 
     pygame.display.flip()
+
+def menu_screen():
+    global in_menu
+    font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
+    font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
+
+    while in_menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    in_menu = False
+
+        screen.fill((0, 0, 0))
+        # Render menu text and button
+        menu_text = font_large.render("Blob's Revenge", True, (255, 255, 255))
+        menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
+        screen.blit(menu_text, menu_text_rect)
+
+        play_button_text = font_small.render("Press SPACE to Play", True, (255, 255, 255))
+        play_button_rect = play_button_text.get_rect(center=(screen.get_width() // 2, 400))
+        screen.blit(play_button_text, play_button_rect)
+
+        pygame.display.flip()
+        clock.tick(60)
     
 # Function to perform the iris wipe transition
 def iris_wipe_transition(screen):
@@ -81,10 +111,16 @@ def reset_game():
 
 
 # MAIN GAME LOOP
+while in_menu:
+    menu_screen()
+    if not in_menu:
+        break
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            closing_game = True
 
     P1.update_position()
 
@@ -148,7 +184,7 @@ while running:
     clock.tick(60)
 
     # Check if the game should end
-    if not running:
+    if not running and not closing_game:
         iris_wipe_transition(screen)
         game_over = True
 
@@ -157,6 +193,7 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                closing_game = True
                 game_over = False
 
             if event.type == pygame.KEYDOWN:
@@ -164,8 +201,9 @@ while running:
                     game_over = False
                     running = True
                     reset_game()  # Reset the game state
+        if game_over and not closing_game:
+            game_over_screen()
 
-        game_over_screen()
         pygame.display.flip()
         clock.tick(60)
 
