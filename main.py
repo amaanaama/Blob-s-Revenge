@@ -8,7 +8,7 @@ from src.Button import Button
 
 pygame.init()
 
-# Create the screen
+#create screen
 screen = pygame.display.set_mode((352, 640))
 clock = pygame.time.Clock()
 running = True
@@ -16,35 +16,48 @@ game_over = False
 closing_game = False
 in_menu = True
 
-sinusoidal_speed = 0.1  # Adjust the speed of the sinusoidal movement (smaller values make it slower)
-sinusoidal_amplitude = 10  # Adjust the amplitude of the sinusoidal movement (how far it moves up and down)
-sinusoidal_offset = 0  # Variable to track the elapsed time for the sinusoidal movement
+
+#sine movement for menu
+sinusoidal_speed = 0.1  
+sinusoidal_amplitude = 10  
+sinusoidal_offset = 0  
+
 
 #background
 background = pygame.image.load('data/assets/background.png')
 
+
 #scoreboard
 scoreboard = pygame.image.load('data/assets/scoreboard.png')
-score = -1 
+score = -1
+high_score = 0 
+
 
 #spawn timer
 spawn_timer = 0
 
-# Title and Icon
+
+#title and icon
 pygame.display.set_caption("Blob's Revenge")
 icon = pygame.image.load('data/assets/blob_icon.png')
 pygame.display.set_icon(icon)
 
+
+#player and enemy objects
 P1 = Player(176, 320)
 LE = LeftEnemy(0, -64)
 RE = RightEnemy(0, -400)
 
+
+#collision detection
 def check_collision():
     global score, running, game_over
     if pygame.sprite.collide_rect(P1, LE) or pygame.sprite.collide_rect(P1, RE):
         running = False
         game_over = True
 
+
+#game over screen
 def game_over_screen():
     font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
     font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
@@ -55,23 +68,28 @@ def game_over_screen():
     game_over_text = pygame.image.load('data/assets/gameover.png')
     screen.blit(game_over_text, (80, 250))
 
-    score_text = font_small.render(f"Final Score: {score}", True, (255, 255, 255))
+    score_text = font_small.render(f"{score}", True, (255, 255, 255))
     screen.blit(score_text, (110, 320))
+
+    high_score_text = font_small.render(f"{high_score}", True, (255, 255, 255))
+    screen.blit(high_score_text, (110, 360))
 
     play_again_text = font_small.render("Press SPACE to Play Again", True, (255, 255, 255))
     screen.blit(play_again_text, (35, 400))
 
     pygame.display.flip()
 
+
+#main menu screen
 def menu_screen():
     global in_menu, sinusoidal_offset
     font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
 
-    # Load the menu logo image
+    #load menu image
     menu_text = pygame.image.load('data/menu/blobsrevenge_logo.png')
     menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
 
-    # Create the start button
+    #start button
     start_button = Button(screen.get_width() // 2, 400, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
 
     while in_menu:
@@ -102,8 +120,7 @@ def menu_screen():
         clock.tick(60)
 
 
-    
-# Function to perform the iris wipe transition
+#iris wipe transition
 def iris_wipe_transition(screen):
     max_radius = int((screen.get_width() ** 2 + screen.get_height() ** 2) ** 0.5)
     for radius in range(0, max_radius, 10):
@@ -112,7 +129,7 @@ def iris_wipe_transition(screen):
         pygame.time.delay(30)  # Add a delay of 30 milliseconds between each frame (adjust as needed)
 
 
-# Function to reset the game state
+#reset game to og state
 def reset_game():
     global score
     P1.rect.x = 176
@@ -128,12 +145,13 @@ def reset_game():
     score = -1
 
 
-# MAIN GAME LOOP
+#main loop - menu part
 while in_menu:
     menu_screen()
     if not in_menu:
         break
 
+#main loop - game part
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -166,6 +184,11 @@ while running:
         P1.maxVel = 9
         LE.speed = 9
         RE.speed = 9
+
+    if score > high_score:
+        high_score = score
+    else:
+        high_score = high_score
 
 
     #fill screen with black
