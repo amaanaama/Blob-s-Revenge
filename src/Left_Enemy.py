@@ -7,8 +7,8 @@ class LeftEnemy(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load('data/assets/left_obs.png')
         self.rect = self.image.get_rect()
-        self.start_x = x  # Store initial x-position
-        self.rect.x = x
+        self.start_x = 0  # Store initial x-position
+        self.rect.x = 0
         self.rect.y = y
         self.speed = 5
 
