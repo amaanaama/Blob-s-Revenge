@@ -1,8 +1,10 @@
 import pygame
+import math
 from pygame.locals import *
 from src.Player import Player 
 from src.Left_Enemy import LeftEnemy
 from src.Right_Enemy import RightEnemy
+from src.Button import Button
 
 pygame.init()
 
@@ -13,6 +15,10 @@ running = True
 game_over = False
 closing_game = False
 in_menu = True
+
+sinusoidal_speed = 0.1  # Adjust the speed of the sinusoidal movement (smaller values make it slower)
+sinusoidal_amplitude = 10  # Adjust the amplitude of the sinusoidal movement (how far it moves up and down)
+sinusoidal_offset = 0  # Variable to track the elapsed time for the sinusoidal movement
 
 #background
 background = pygame.image.load('data/assets/background.png')
@@ -58,32 +64,40 @@ def game_over_screen():
     pygame.display.flip()
 
 def menu_screen():
-    global in_menu
+    global in_menu, sinusoidal_offset
     font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
     font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
+
+    start_button = Button(screen.get_width() // 2, 400, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
 
     while in_menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+        
+        sinusoidal_offset += sinusoidal_speed
+        button_y_offset = int(sinusoidal_amplitude * math.sin(sinusoidal_offset))
+        start_button.rect.y = 400 + button_y_offset
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    in_menu = False
+
+        start_button.update()
+
+        if start_button.is_pressed():
+            in_menu = False
 
         screen.fill((0, 0, 0))
+        screen.blit(background, (0, 0))
         # Render menu text and button
         menu_text = font_large.render("Blob's Revenge", True, (255, 255, 255))
         menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
         screen.blit(menu_text, menu_text_rect)
 
-        play_button_text = font_small.render("Press SPACE to Play", True, (255, 255, 255))
-        play_button_rect = play_button_text.get_rect(center=(screen.get_width() // 2, 400))
-        screen.blit(play_button_text, play_button_rect)
+        screen.blit(start_button.image, start_button.rect)
 
         pygame.display.flip()
         clock.tick(60)
+
     
 # Function to perform the iris wipe transition
 def iris_wipe_transition(screen):
