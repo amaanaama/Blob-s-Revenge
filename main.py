@@ -66,10 +66,12 @@ def game_over_screen():
     
     
     game_over_text = pygame.image.load('data/assets/gameover.png')
-    screen.blit(game_over_text, (80, 250))
+    screen.blit(game_over_text, (95, 100))
 
+    score_img = pygame.image.load('data/assets/score.png')
     score_text = font_small.render(f"{score}", True, (255, 255, 255))
-    screen.blit(score_text, (110, 320))
+    screen.blit(score_img, (110, 320))
+    screen.blit(score_text, (230, 312))
 
     high_score_text = font_small.render(f"{high_score}", True, (255, 255, 255))
     screen.blit(high_score_text, (110, 360))
