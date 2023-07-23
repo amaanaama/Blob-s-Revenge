@@ -59,25 +59,32 @@ def check_collision():
 
 #game over screen
 def game_over_screen():
-    font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
+    global sinusoidal_offset
     font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
 
     screen.fill((0, 0, 0))
     
     
     game_over_text = pygame.image.load('data/assets/gameover.png')
-    screen.blit(game_over_text, (95, 100))
-
     score_img = pygame.image.load('data/assets/score.png')
+    high_score_img = pygame.image.load('data/assets/highscore.png')
+    play_again_text = pygame.image.load('data/assets/pressspace.png')
     score_text = font_small.render(f"{score}", True, (255, 255, 255))
-    screen.blit(score_img, (110, 320))
-    screen.blit(score_text, (230, 312))
-
     high_score_text = font_small.render(f"{high_score}", True, (255, 255, 255))
-    screen.blit(high_score_text, (110, 360))
 
-    play_again_text = font_small.render("Press SPACE to Play Again", True, (255, 255, 255))
-    screen.blit(play_again_text, (35, 400))
+    sinusoidal_offset += sinusoidal_speed
+    y_offset_menu = int(sinusoidal_amplitude * math.sin(sinusoidal_offset))
+
+    game_over_text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, 140 + y_offset_menu))
+    play_again_text_rect = play_again_text.get_rect(center=(screen.get_width() // 2, 450 + y_offset_menu))
+
+
+    screen.blit(game_over_text, game_over_text_rect)
+    screen.blit(score_img, (110-5, 300-30))
+    screen.blit(score_text, (230-5, 292-30))
+    screen.blit(high_score_img, (75-5, 336-30))
+    screen.blit(high_score_text, (275-5, 340-30))
+    screen.blit(play_again_text, play_again_text_rect)
 
     pygame.display.flip()
 
