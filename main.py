@@ -66,8 +66,12 @@ def game_over_screen():
 def menu_screen():
     global in_menu, sinusoidal_offset
     font_large = pygame.font.Font('data/assets/04B_25__.TTF', 48)
-    font_small = pygame.font.Font('data/assets/04B_25__.TTF', 32)
 
+    # Load the menu logo image
+    menu_text = pygame.image.load('data/menu/blobsrevenge_logo.png')
+    menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
+
+    # Create the start button
     start_button = Button(screen.get_width() // 2, 400, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
 
     while in_menu:
@@ -77,9 +81,10 @@ def menu_screen():
                 quit()
         
         sinusoidal_offset += sinusoidal_speed
+        # Apply sinusoidal movement to the logo and start button
         button_y_offset = int(sinusoidal_amplitude * math.sin(sinusoidal_offset))
+        menu_text_rect.y = 250 + button_y_offset
         start_button.rect.y = 400 + button_y_offset
-
 
         start_button.update()
 
@@ -89,14 +94,13 @@ def menu_screen():
         screen.fill((0, 0, 0))
         screen.blit(background, (0, 0))
         # Render menu text and button
-        menu_text = font_large.render("Blob's Revenge", True, (255, 255, 255))
-        menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
         screen.blit(menu_text, menu_text_rect)
-
         screen.blit(start_button.image, start_button.rect)
+        
 
         pygame.display.flip()
         clock.tick(60)
+
 
     
 # Function to perform the iris wipe transition
