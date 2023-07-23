@@ -179,6 +179,8 @@ def reset_game():
     P1.rect.x = 176
     P1.rect.y = 320
     P1.acc = 0.5
+    P1.velX = 0
+    P1.velY = 0
     P1.maxVel = 5
     LE.rect.x = random.randint(-180, -4)
     LE.rect.y = -64
@@ -203,8 +205,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             closing_game = True
-    
-    P1.update_position()
+    if not game_over:
+        P1.update_position()
 
     if LE.rect.y == -64:
         score += 1
@@ -248,7 +250,8 @@ while running:
 
     #draw sprite from Player.py
     screen.blit(background, (0, 0))
-    screen.blit(P1.image, P1.rect)
+    if not game_over:
+        screen.blit(P1.image, P1.rect)
     
     #draw one instance of Left_Enemy.py
     LE.update_position()
