@@ -1,6 +1,8 @@
 import pygame
 import math
 import random
+import asyncio
+
 from pygame.locals import *
 from src.Player import Player 
 from src.Left_Enemy import LeftEnemy
@@ -15,6 +17,7 @@ main_menu = pygame.mixer.Sound('data/audio/main_menu.mp3')
 score_sound = pygame.mixer.Sound('data/audio/score_up.wav')
 pygame.mixer.music.load('data/audio/game_over.wav')
 gameplay_music = pygame.mixer.Sound('data/audio/gameplay.mp3')
+main_menu.set_volume(0.3)
 gameplay_music.set_volume(0.1)
 
 
@@ -90,10 +93,10 @@ def game_over_screen():
 
 
     screen.blit(game_over_text, game_over_text_rect)
-    screen.blit(score_img, (110-5, 300-30))
-    screen.blit(score_text, (230-5, 292-30))
-    screen.blit(high_score_img, (75-5, 336-30))
-    screen.blit(high_score_text, (275-5, 340-30))
+    screen.blit(score_img, (110-8, 300-30))
+    screen.blit(score_text, (230-8, 292-30))
+    screen.blit(high_score_img, (75-8, 336-30))
+    screen.blit(high_score_text, (275-8, 340-30))
     screen.blit(play_again_text, play_again_text_rect)
 
     pygame.display.flip()
@@ -107,9 +110,11 @@ def menu_screen():
     #load menu image
     menu_text = pygame.image.load('data/menu/blobsrevenge_logo.png')
     menu_text_rect = menu_text.get_rect(center=(screen.get_width() // 2, 250))
+    instructions = pygame.image.load('data/menu/instructions.png')
+    instructions_rect = instructions.get_rect(center=(screen.get_width() // 2, 400))
 
     #start button
-    start_button = Button(screen.get_width() // 2, 400, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
+    start_button = Button(screen.get_width() // 2, 225, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
 
     main_menu.play(-1)
 
@@ -122,8 +127,9 @@ def menu_screen():
         sinusoidal_offset += sinusoidal_speed
         # Apply sinusoidal movement to the logo and start button
         button_y_offset = int(sinusoidal_amplitude * math.sin(sinusoidal_offset))
-        menu_text_rect.y = 250 + button_y_offset
-        start_button.rect.y = 400 + button_y_offset
+        menu_text_rect.y = 50 + button_y_offset
+       
+        instructions_rect.y = 300 + button_y_offset
 
         start_button.update()
 
@@ -135,6 +141,7 @@ def menu_screen():
         # Render menu text and button
         screen.blit(menu_text, menu_text_rect)
         screen.blit(start_button.image, start_button.rect)
+        screen.blit(instructions, instructions_rect)
         
 
         pygame.display.flip()
@@ -148,6 +155,7 @@ def iris_wipe_transition(screen):
     
 
     # Play the game over music before the transition starts
+    pygame.mixer.music.set_volume(5)
     pygame.mixer.music.play()
 
     for radius in range(0, max_radius, 10):
@@ -243,11 +251,12 @@ while running:
     screen.blit(P1.image, P1.rect)
     
     #draw one instance of Left_Enemy.py
-    screen.blit(LE.image, LE.rect)
     LE.update_position()
-
-    screen.blit(RE.image, RE.rect)
+    screen.blit(LE.image, LE.rect)
+    
     RE.update_position()
+    screen.blit(RE.image, RE.rect)
+    
 
     screen.blit(scoreboard, (93, 25))
 
