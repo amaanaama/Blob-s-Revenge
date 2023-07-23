@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 from pygame.locals import *
 from src.Player import Player 
 from src.Left_Enemy import LeftEnemy
@@ -7,6 +8,15 @@ from src.Right_Enemy import RightEnemy
 from src.Button import Button
 
 pygame.init()
+pygame.mixer.init()
+
+#load sounds
+main_menu = pygame.mixer.Sound('data/audio/main_menu.mp3')
+score_sound = pygame.mixer.Sound('data/audio/score_up.wav')
+pygame.mixer.music.load('data/audio/game_over.wav')
+gameplay_music = pygame.mixer.Sound('data/audio/gameplay.mp3')
+gameplay_music.set_volume(0.1)
+
 
 #create screen
 screen = pygame.display.set_mode((352, 640))
@@ -45,8 +55,8 @@ pygame.display.set_icon(icon)
 
 #player and enemy objects
 P1 = Player(176, 320)
-LE = LeftEnemy(0, -64)
-RE = RightEnemy(0, -400)
+LE = LeftEnemy(random.randint(-180, -4), -64)
+RE = RightEnemy(random.randint(64, 240), -400)
 
 
 #collision detection
@@ -101,6 +111,8 @@ def menu_screen():
     #start button
     start_button = Button(screen.get_width() // 2, 400, 'data/menu/play_button.png', 'data/menu/play_button_pressed.png')
 
+    main_menu.play(-1)
+
     while in_menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,15 +139,30 @@ def menu_screen():
 
         pygame.display.flip()
         clock.tick(60)
+    main_menu.stop()
 
 
 #iris wipe transition
 def iris_wipe_transition(screen):
     max_radius = int((screen.get_width() ** 2 + screen.get_height() ** 2) ** 0.5)
+    
+
+    # Play the game over music before the transition starts
+    pygame.mixer.music.play()
+
     for radius in range(0, max_radius, 10):
         pygame.draw.circle(screen, (0, 0, 0), (screen.get_width() // 2, screen.get_height() // 2), radius)
         pygame.display.flip()
-        pygame.time.delay(30)  # Add a delay of 30 milliseconds between each frame (adjust as needed)
+        pygame.time.delay(30)
+
+    # Wait until the music finishes playing
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(60)
+
+    # Stop the game over music
+    pygame.mixer.music.stop()
+
+
 
 
 #reset game to og state
@@ -145,13 +172,14 @@ def reset_game():
     P1.rect.y = 320
     P1.acc = 0.5
     P1.maxVel = 5
-    LE.rect.x = 0
+    LE.rect.x = random.randint(-180, -4)
     LE.rect.y = -64
     LE.speed = 5
-    RE.rect.x = 0
+    RE.rect.x = random.randint(64, 240)
     RE.rect.y = -400
     RE.speed = 5
     score = -1
+
 
 
 #main loop - menu part
@@ -162,17 +190,24 @@ while in_menu:
 
 #main loop - game part
 while running:
+    gameplay_music.play(-1)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             closing_game = True
-
+    
     P1.update_position()
 
     if LE.rect.y == -64:
         score += 1
+        pygame.mixer.Channel(1).play(score_sound)
+        score_sound.set_volume(1.0)
+        score_sound.play()
     if RE.rect.y == -64:
         score += 1
+        pygame.mixer.Channel(1).play(score_sound)
+        score_sound.set_volume(1.0)
+        score_sound.play()
     if score == 15:
         P1.acc = 0.6
         P1.maxVel = 6
@@ -235,11 +270,13 @@ while running:
 
     # Check if the game should end
     if not running and not closing_game:
+        gameplay_music.stop()
         iris_wipe_transition(screen)
         game_over = True
 
     # Game Over Screen Loop
     while game_over:
+        gameplay_music.stop()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
