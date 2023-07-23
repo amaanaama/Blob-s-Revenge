@@ -9,4 +9,5 @@ Arrow Keys/WASD: Move player
 This game was made using Python (pygame)
 
 main_menu.mp3 and gameplay.mp3 by @soundsbymicah and @rafeprod.wav, effects by me
+
 game_over.wav and score_up.wav from Super Mario World
